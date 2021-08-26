@@ -1,4 +1,4 @@
-let heightArtcl = 100;
+
 
 
 
