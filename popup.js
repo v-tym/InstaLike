@@ -1,5 +1,8 @@
 let start = document.getElementById("start");
 let stop = document.getElementById("stop");
+let triger1 = true;
+let triger0 = false;
+
 
 start.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -15,13 +18,47 @@ stop.addEventListener("click", async () => {
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: stopObsrv,
+    function: stop,    
   });
 });
 */
 
-function main () { 
+function append() {
+
+  //let el = document.getElementsByTagName('')
+  let button = document.createElement('button');
+  button.className = "wizbutstop";
+  button.innerHTML = "Stop";
+  button.style.position = 'fixed';
+  button.style.left = "0px";
+  button.style.top = "54px";
+  button.style.background = "red";
+  button.style.width = "100px";
+  button.style.height = "100px";
   
+  document.body.append(button);
+
+  
+}
+
+function main () { 
+
+
+  let button = document.createElement('button');
+  button.className = "wizbutstop";
+  button.innerHTML = "Stop";
+  button.style.position = 'fixed';
+  button.style.left = "0px";
+  button.style.top = "54px";
+  button.style.background = "red";
+  button.style.width = "100px";
+  button.style.height = "100px";
+  
+  document.body.append(button);
+
+
+  
+  let triger = true;
   let article = document.getElementsByClassName('_8Rm4L');
   let likes = document.getElementsByClassName('fr66n');
   let stop = () => {
@@ -82,15 +119,7 @@ console.log('stoping')
   
   // Later, you can stop observing
    // observer.disconnect();
-   stop.addEventListener("click", async () => {
-     console.log('stop');
-    observer.disconnect();
-    
-  });
-
-  
-
-
+   button.onclick = () => observer.disconnect();
 
   ////////////////////////////////////////////////////////////////////\
 
@@ -131,14 +160,7 @@ main.stop = function() {
 main.observer = new MutationObserver(callback);
 */
 
-
-
-
-
-
-//------------------------------------------
 /*
-// Initialize butotn with users's prefered color
 let changeColor = document.getElementById("changeColor");
 
 chrome.storage.sync.get("color", ({ color }) => {
