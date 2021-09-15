@@ -23,24 +23,6 @@ stop.addEventListener("click", async () => {
 });
 */
 
-function append() {
-
-  //let el = document.getElementsByTagName('')
-  let button = document.createElement('button');
-  button.className = "wizbutstop";
-  button.innerHTML = "Stop";
-  button.style.position = 'fixed';
-  button.style.left = "0px";
-  button.style.top = "54px";
-  button.style.background = "red";
-  button.style.width = "100px";
-  button.style.height = "100px";
-  
-  document.body.append(button);
-
-  
-}
-
 function main () { 
 
 
@@ -58,12 +40,9 @@ function main () {
 
 
   
-  let triger = true;
-  let article = document.getElementsByClassName('_8Rm4L');
+  let timeCall = 0;
+  //let article = document.getElementsByClassName('_8Rm4L');
   let likes = document.getElementsByClassName('fr66n');
-  let stop = () => {
-console.log('stoping')
-  };
 
   like(likes);
   scroling();
@@ -92,7 +71,7 @@ console.log('stoping')
   console.log(targetNode[0].childNodes[0].childNodes[0].childNodes[1].childNodes[0]);
   
   // Options for the observer (which mutations to observe)
-  const config = { attributes: true, childList: true, subtree: true };
+  const config = { attributes: true, childList: true};
   
   // Callback function to execute when mutations are observed
   const callback = function(mutationsList, observer) {
@@ -103,7 +82,7 @@ console.log('stoping')
               && mutation.addedNodes[0].nodeName == 'ARTICLE'
               && mutation.previousSibling != null) {           
               //console.log(mutation.addedNodes[0].getElementsByClassName('fr66n'));
-              //like(mutation.addedNodes[0].getElementsByClassName('fr66n'))
+              like(mutation.addedNodes[0].getElementsByClassName('fr66n'))
               
           }        
       }
@@ -117,9 +96,29 @@ console.log('stoping')
   // Start observing the target node for configured mutations
   observer.observe(targetNode[0].childNodes[0].childNodes[0].childNodes[1].childNodes[0], config);
   
+  let timerId = setInterval(() => {
+    console.log(Date.now()-timeCall);
+    if ((Date.now()-timeCall) > 5000) {
+      scroling();
+    }
+    if ((Date.now()-timeCall) > 60000) {
+      console.log('Error parsing');
+      clear();
+    }
+  }, 1000);
+
+  //timerId();
   // Later, you can stop observing
    // observer.disconnect();
-   button.onclick = () => observer.disconnect();
+   button.onclick = () => {
+     clear();
+    }
+
+    function clear(){
+      observer.disconnect();
+      button.remove();
+      clearInterval(timerId);
+    }
 
   ////////////////////////////////////////////////////////////////////\
 
@@ -141,6 +140,8 @@ console.log('stoping')
   function scroling () {  
     let height = document.documentElement.clientHeight;
     window.scroll(0, window.scrollY + height); 
+    timeCall = Date.now();
+    console.log("scril", timeCall)
   }
 
   function like (likes) {
