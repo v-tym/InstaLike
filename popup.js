@@ -12,20 +12,8 @@ start.addEventListener("click", async () => {
     function: main,
   });
 });
-/*
-stop.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: stop,    
-  });
-});
-*/
-
-function main () { 
-
-
+function main () {   
   let button = document.createElement('button');
   button.className = "wizbutstop";
   button.innerHTML = "Stop";
@@ -38,37 +26,17 @@ function main () {
   
   document.body.append(button);
 
-
-  
   let timeCall = 0;
-  //let article = document.getElementsByClassName('_8Rm4L');
   let likes = document.getElementsByClassName('fr66n');
-
+  
   like(likes);
   scroling();
-  
 
-  /*object.addEventListener("load", myScript);
-  function me (){
-    let likes = document.getElementsByClassName('fr66n');
-
-    let heightArticles = 0;
-    let scrolTo = 0;
-    let article = document.getElementsByClassName('_8Rm4L');
-    //let loadingStatus = document.getElementsByClassName('Id0Rh');
-   
-    Object.values(article).forEach(element => {
-      heightArticles += element.offsetHeight;
-    });
-  
-    console.log(article);
-  }*/
-
-  
-///////////////////////////////////////////////////////////
   // Select the node that will be observed for mutations
   const targetNode = document.getElementsByTagName('main');
   console.log(targetNode[0].childNodes[0].childNodes[0].childNodes[1].childNodes[0]);
+
+   
   
   // Options for the observer (which mutations to observe)
   const config = { attributes: true, childList: true};
@@ -80,14 +48,12 @@ function main () {
           if (mutation.type == 'childList' 
               && mutation.addedNodes.length != 0
               && mutation.addedNodes[0].nodeName == 'ARTICLE'
-              && mutation.previousSibling != null) {           
-              //console.log(mutation.addedNodes[0].getElementsByClassName('fr66n'));
+              && mutation.previousSibling != null) {
               like(mutation.addedNodes[0].getElementsByClassName('fr66n'))
               
           }        
       }
       scroling();
-
   };
   
   // Create an observer instance linked to the callback function
@@ -98,7 +64,7 @@ function main () {
   
   let timerId = setInterval(() => {
     console.log(Date.now()-timeCall);
-    if ((Date.now()-timeCall) > 5000) {
+    if ((Date.now()-timeCall) > 8000) {
       scroling();
     }
     if ((Date.now()-timeCall) > 60000) {
@@ -107,9 +73,7 @@ function main () {
     }
   }, 1000);
 
-  //timerId();
-  // Later, you can stop observing
-   // observer.disconnect();
+   // Later, you can stop observing   
    button.onclick = () => {
      clear();
     }
@@ -120,26 +84,12 @@ function main () {
       clearInterval(timerId);
     }
 
-  ////////////////////////////////////////////////////////////////////\
-
-  //console.log(heightArticles);
-  /*
-  chrome.storage.local.set({"heightArticles": heightArticles}, function() {
-    console.log('heightArticles is set to ' + heightArticles);
-  });*/
-
-  /*setTimeout(function() {
-    window.scroll(0, scroling(heightArticles));
-  }, 3000);*/
-
- /* setInterval(() => {
-    console.log(loadingStatus); //.childNodes[0].attributes[1].value
-  }, 3000);*/
-  
-
-  function scroling () {  
+  function scroling () { 
+    let articleHeight = document.getElementsByTagName('main')[0].childNodes[0].childNodes[0].childNodes[1].childNodes[0].childNodes[0].clientHeight;  
     let height = document.documentElement.clientHeight;
-    window.scroll(0, window.scrollY + height); 
+    setTimeout(() => {
+      window.scroll(0, window.scrollY + articleHeight); 
+    }, 5000); 
     timeCall = Date.now();
     console.log("scril", timeCall)
   }
@@ -152,37 +102,3 @@ function main () {
     })
   }
 }
-/*
-main.stop = function() {
-  console.log('stop is working');
-  main.observer.disconnect();
-};
-
-main.observer = new MutationObserver(callback);
-*/
-
-/*
-let changeColor = document.getElementById("changeColor");
-
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
-});
-
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
-  });
-});
-
-// The body of this function will be execuetd as a content script inside the
-// current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
-  });
-}
-*/
