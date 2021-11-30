@@ -1,6 +1,4 @@
-//import * as bt from './button.js';
 let start = document.getElementById("startLikeMain");
-//let observeLikeMain = document.getElementById("observeLikeMain");
 let startLikeAcaunt = document.getElementById("startLikeAcaunt");
 
 start.addEventListener("click", async () => {
@@ -11,16 +9,7 @@ start.addEventListener("click", async () => {
     function: likeMain,
   });
 });
-/*
-observeLikeMain.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: likeMainObserve,
-  });
-});
-*/
 startLikeAcaunt.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -52,10 +41,8 @@ function likeMain () {
           if (mutation.type == 'childList' 
               && mutation.addedNodes.length != 0
               && mutation.addedNodes[0].nodeName == 'ARTICLE'
-              && mutation.previousSibling != null) {
-                //console.log(mutation.addedNodes[0].getElementsByClassName('fr66n'));
+              && mutation.previousSibling != null) {              
               like(mutation.addedNodes[0].getElementsByClassName('fr66n'));
-              
               timeCall = Date.now(); 
           }        
       }
@@ -99,13 +86,7 @@ function likeMain () {
           like.childNodes[0].click();
         }        
       }
-    }
-    //  let toLike = Object.values(likes).filter(el => !el.childNodes[0].childNodes[1].childNodes[0].childNodes[0].ariaLabel == 'Like'); 
- 
-    // toLike.forEach(el => {
-    //   console.log("like");
-    //   el.childNodes[0].click();
-    // })
+    }    
   }
 
   function buttonStyles() {
@@ -183,64 +164,3 @@ function likeAcaunt () {
     clearInterval(intevalId);
   }
 }
-/*
-// parse Main paige and like for new post
-function likeMainObserve () {
-  let button = document.createElement('button');
-  buttonStyles();
-
-  function buttonStyles() {
-    button.innerHTML = "Stop";
-    button.style.position = 'fixed';
-    button.style.left = "0px";
-    button.style.top = "54px";
-    button.style.background = "red";
-    button.style.width = "100px";
-    button.style.height = "100px";
-    button.style.type = "button";
-    
-    document.body.append(button);
-  }
-
-  // Select the node that will be observed for mutations
-  const targetNode = document.getElementsByTagName('main');  
-  
-  // Options for the observer (which mutations to observe)
-  const config = { attributes: true, childList: true};
-  
-  // Callback function to execute when mutations are observed
-  const callback = function(mutationsList, observer) {
-      // Use traditional 'for loops' for IE 11
-      for(const mutation of mutationsList) {
-          if (mutation.type == 'childList' 
-              && mutation.addedNodes.length != 0
-              && mutation.addedNodes[0].nodeName == 'ARTICLE'
-              && mutation.previousSibling != null) {
-              like(mutation.addedNodes[0].getElementsByClassName('fr66n'));              
-          }        
-      }
-  };
-  
-  // Create an observer instance linked to the callback function
-  let observer = new MutationObserver(callback);
-  
-  // Start observing the target node for configured mutations
-  observer.observe(targetNode[0].childNodes[0].childNodes[0].childNodes[1].childNodes[0], config);
-
-  // Later, you can stop observing   
-  button.onclick = () => clear();
-
-  function clear(){
-    observer.disconnect();
-    button.remove();
-    clearInterval(timerId);
-  }
-
-  function like (likes) {
-    let toLike = Object.values(likes).filter(el => el.childNodes[0].childNodes[0].childNodes[0].childNodes[0].ariaLabel == 'Like'); 
-  
-    toLike.forEach(el => {
-      el.childNodes[0].click();
-    })
-  }
-}*/
